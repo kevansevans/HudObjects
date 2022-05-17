@@ -1,0 +1,97 @@
+Class DemoHud : BaseStatusBar
+{
+	BoxObject rootscene;
+	
+	ImageObject title;
+	ImageObject help;
+	MaskObject mask;
+	StringObject follower;
+	
+	vector2 mugspeed;
+	vector2 rootspeed;
+	
+	override void Init()
+	{
+		rootscene = BoxObject.create((0, 0), (1, 1), self);
+		mask = MaskObject.create((0, 0), (64, 64));
+		title = ImageObject.create("TITLEPIC");
+		help = ImageObject.create("HELP");
+		follower = StringObject.create("Local To Global positions", (0, 0), (1, 1), self);
+		
+		rootscene.addChild(help);
+		rootscene.addChild(mask);
+		mask.addChild(title);
+		
+		mugspeed = (3, 3);
+		rootspeed = (1, 1);
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		rootscene.position += rootspeed;
+		mask.position += mugspeed;
+		
+		if (mask.position.x < 0)
+		{
+			mask.position.x = 0;
+			mugspeed.x *= -1;
+		}
+		if (mask.position.x + 64 > 320)
+		{
+			mask.position.x = 320 - 64;
+			mugspeed.x *= -1;
+		}
+		
+		if (mask.position.y < 0)
+		{
+			mask.position.y = 0;
+			mugspeed.y *= -1;
+		}
+		
+		if (mask.position.y + 64 > 200)
+		{
+			mask.position.y = 200 - 64;
+			mugspeed.y *= -1;
+		}
+		
+		Vector2 scale = getHUDScale();
+		
+		if (rootscene.position.x + 320 > (Screen.getWidth() / scale.x))
+		{
+			rootscene.position.x = (Screen.getWidth() / scale.x) - 320;
+			rootspeed.x *= -1;
+		}
+		
+		if (rootscene.position.x < 0)
+		{
+			rootscene.position.x = 0;
+			rootspeed.x *= -1;
+		}
+		
+		if (rootscene.position.y + 200 > (Screen.getHeight() / scale.y))
+		{
+			rootscene.position.y = (Screen.getHeight() / scale.y) - 200;
+			rootspeed.y *= -1;
+		}
+		
+		if (rootscene.position.y < 0)
+		{
+			rootscene.position.y = 0;
+			rootspeed.y *= -1;
+		}
+		
+		follower.position = mask.LocalToGlobal((32, 32));
+	}	
+	
+	override void Draw(int state, double tic) 
+	{
+		Super.Draw(state, tic);
+		
+		BeginHUD();
+	
+		rootscene.draw();
+		follower.draw();
+	}
+}

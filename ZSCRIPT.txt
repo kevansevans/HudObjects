@@ -1,0 +1,4 @@
+version "4.6"
+
+#include "HudObjects/HudObjects.txt"
+#include "ZScript/DemoHud.txt"
