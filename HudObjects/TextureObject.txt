@@ -24,6 +24,6 @@ Class TextureObject : BoxObject
 		
 		HudClass.DrawTexture(TexID, r_pos, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), r_scale);
 		
-		self.drawChildren(r_pos, r_scale);
+		self.drawChildren(a_pos, r_scale);
 	}
 }
